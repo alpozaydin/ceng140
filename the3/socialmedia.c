@@ -64,6 +64,8 @@ void appendToCache(Cache *cache, void *data) { /* to append the user and post to
   check = cache -> head;
   while (check) {
     if (check -> data == data) {
+      free(new); /* free new since it is already in the cache */
+      /* optional: moveToFront(cache, check); */
       return;
     }
     check = check -> next;
@@ -71,6 +73,12 @@ void appendToCache(Cache *cache, void *data) { /* to append the user and post to
 
   if (cache -> size == cache -> capacity) { /* cache_capacity >= 1 */
     removeLast(cache);
+    if (!cache -> head) { /* if the capacity equals 1 and the cache is full -> after remove function the cache is empty... */
+      cache -> head = new;
+      cache -> tail = new;
+      cache -> size ++;
+      return;
+    }
   }
 
   cache -> head -> prev = new;
@@ -87,7 +95,7 @@ void moveToFront(Cache *cache, Node *node) {
  if (!cache || !node) return; /* NULL parameters handling */
  check = cache -> head ;
 
- while (check && check != node) {
+ while (check && check != node) { /* check if the node is in the cache */
     check = check -> next;
  }
  if (!check) return; /* if node is not in the cache return nothing */
@@ -207,6 +215,7 @@ void followUser(int followerId, int followedId) {
   check = followed -> followers_head;
   while (check) {
     if (check -> data == follower) {
+      free(new_follower);
       return;
     }
     check = check -> next;
