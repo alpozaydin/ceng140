@@ -1,228 +1,337 @@
 #include<stdio.h>
 
-int addresses[4];
-int is_inside_intron = 0;
-
-int matching(char* chain, char* sequence){
-    int cursor = 0;
-    int intron_index = 0;
-    int aa_index = 0;
-    int match_found = 0; // setting the initial condition the 0=false
-
-    while (sequence[cursor] != '\0')
-    {
-        int arg = chain[aa_index];
-        printf("initials are (%c -> cursor = %d%c%c%c, aa_index = %d, aa = %c ) ", arg, cursor, sequence[cursor], sequence[cursor + 1], sequence[cursor + 2], aa_index, chain[aa_index]);
-        match_found = 0;
-        switch (arg) {
+int is_matching(int cursor, char* sequence,char letter) {
+    switch (letter) {
         case 'g': 
             if ((sequence[cursor] == 'C') && (sequence[cursor + 1] == 'C')){
-                match_found = 1;
+                return 1;
             }
             break;
         case 'a': 
             if ((sequence[cursor] == 'C') && (sequence[cursor + 1] == 'G')){
-                match_found = 1;
+                return 1;
             }
             break;
         case 'v': 
             if ((sequence[cursor] == 'C') && (sequence[cursor + 1] == 'A')){
-                match_found = 1;
+                return 1;
             }
             break;
         case 'i': 
             if ((sequence[cursor] == 'T') && (sequence[cursor + 1] == 'A') && (sequence[cursor + 2] != 'C')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'l': 
             if ((sequence[cursor] == 'A') && (sequence[cursor + 1] == 'A') && (sequence[cursor + 2] == 'T' || sequence[cursor + 2] == 'C')){
-                match_found = 1;      
+                return 1;      
             }
             else if ((sequence[cursor] == 'G') && (sequence[cursor + 1] == 'A'))
             {
-                match_found = 1;
+                return 1;
             }
             break;
         case 's': 
             if ((sequence[cursor] == 'A') && (sequence[cursor + 1] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             else if ((sequence[cursor] == 'T') && (sequence[cursor + 1] == 'C') && ((sequence[cursor + 2] == 'A') || (sequence[cursor + 2] == 'G')))
             {
-                match_found = 1;
+                return 1;
             }         
             break;
         case 't': 
             if ((sequence[cursor] == 'T') && (sequence[cursor + 1] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'p': 
             if ((sequence[cursor] == 'G') && (sequence[cursor + 1] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'd':
             if ((sequence[cursor] == 'C') && (sequence[cursor + 1] == 'T') && (sequence[cursor + 2] == 'A' || sequence[cursor + 2] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'e':
              if ((sequence[cursor] == 'C') && (sequence[cursor + 1] == 'T') && (sequence[cursor + 2] == 'T' || sequence[cursor + 2] == 'C')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'k': 
             if ((sequence[cursor] == 'T') && (sequence[cursor + 1] == 'T') && (sequence[cursor + 2] == 'T' || sequence[cursor + 2] == 'C')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'r':
             if ((sequence[cursor] == 'G') && (sequence[cursor + 1] == 'C')){
-                match_found = 1;      
+                return 1;      
             }
             else if ((sequence[cursor] == 'T') && (sequence[cursor + 1] == 'C') && (sequence[cursor + 2] == 'T' || sequence[cursor + 2] == 'C'))
             {
-                match_found = 1;
+                return 1;
             }
             break;
         case 'n': 
             if ((sequence[cursor] == 'T') && (sequence[cursor + 1] == 'T') && (sequence[cursor + 2] == 'A' || sequence[cursor + 2] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'q':
             if ((sequence[cursor] == 'G') && (sequence[cursor + 1] == 'T') && (sequence[cursor + 2] == 'T' || sequence[cursor + 2] == 'C')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'c': 
             if ((sequence[cursor] == 'A') && (sequence[cursor + 1] == 'C') && (sequence[cursor + 2] == 'A' || sequence[cursor + 2] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'm': 
             if ((sequence[cursor] == 'T') && (sequence[cursor + 1] == 'A') && (sequence[cursor + 2] == 'C')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'w': 
             if ((sequence[cursor] == 'A') && (sequence[cursor + 1] == 'C') && (sequence[cursor + 2] == 'C')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'f': 
             if ((sequence[cursor] == 'A') && (sequence[cursor + 1] == 'A') && (sequence[cursor + 2] == 'A' || sequence[cursor + 2] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'y': 
             if ((sequence[cursor] == 'A') && (sequence[cursor + 1] == 'T') && (sequence[cursor + 2] == 'A' || sequence[cursor + 2] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case 'h': 
             if ((sequence[cursor] == 'G') && (sequence[cursor + 1] == 'T') && (sequence[cursor + 2] == 'A' || sequence[cursor + 2] == 'G')){
-                match_found = 1;      
+                return 1;      
             }
             break;
         case '.':
             if ((sequence[cursor] == 'A') && (sequence[cursor + 1] == 'T') && (sequence[cursor + 2] == 'T' || sequence[cursor + 2] == 'C')){
-                match_found = 1;      
+                return 1;      
             }
             else if ((sequence[cursor] == 'A') && (sequence[cursor + 1] == 'C') && (sequence[cursor + 2] == 'T'))
             {
-                match_found = 1;
+                return 1;
             }
             break;
         default: 
             break;
-    } // end of the switch-case statement
-
-    if (match_found)
-    {
-        printf("match_found ");
-        cursor += 3;
-        aa_index += 1;
-        if (is_inside_intron == 1)
-        {
-            addresses[intron_index] = cursor - 4;
-            is_inside_intron = 0;
-            intron_index += 1;
-        }
-        
-    } else { // no match found -> intron area
-        printf("no_match ");
-        cursor += 1;
-        if (is_inside_intron == 0)
-        {
-            addresses[intron_index] = cursor - 1;
-            is_inside_intron = 1;
-            intron_index += 1;
-        }
-    }
-    printf("last -> cursor=%d, aa_index=%d, aa = %c\n", cursor, aa_index, chain[aa_index]);
-    } // end of the while loop
+    } 
     return 0;
 }
 
 
-int main(int argc, char const *argv[])
+char sequence[3000];
+char chain[3000];
+int length_sequence, length_chain;
+
+
+int main()
 {
-    char sequence[3000];
-    char chain[3000];
+    
     int i = 0;
     int n = 0;
     char ch;
 
-    // sequnce 
+    int start_cursor;
+    int end_cursor;
+    int aa_index;
+    int aa_index_end;
+    int exon1_index[2] = {0, 0};
+    int exon2_index[2] = {0, 0};
+    int exon3_index[2] = {0, 0};
+    int intron1[2] = {0, 0};
+    int intron2[2] = {0, 0};
+    start_cursor = 0;
+    aa_index = 0;
+    
+       
     while ((ch = getchar()) != '.'){
-        if (ch != ' ' && ch != '\n' && ch != '\t'){ // creating the sequence array without any blanks
+        if (ch != ' ' && ch != '\n' && ch != '\t'){ 
             sequence[i] = ch;
             i++;
         }
     }
-    sequence[i] = '\0'; // adding the null character to the end of the string
+    sequence[i] = '\0'; 
+    length_sequence = i - 1;
 
 
-    // aminoacid chain
     while ((ch = getchar()) != '.'){
-        if (ch != ' ' && ch != '\n' && ch != '\t'){ // creating the aminoacid array without any blanks
+        if (ch != ' ' && ch != '\n' && ch != '\t'){ 
             chain[n] = ch;
             n++;
         }
     }
-    chain[n] = '.'; // to correctly detect the stop codons
-    chain[n + 1] = '\0'; // adding the null character to the end of the string
+    chain[n] = '.'; 
+    chain[n + 1] = '\0'; 
+    length_chain = n;
+    
+    exon3_index[1] = length_sequence;
+    
+    while (is_matching(start_cursor, sequence, chain[aa_index]))
+    {
+        start_cursor += 3;
+        aa_index += 1;
+    }
+    exon1_index[1] = start_cursor - 1; 
 
-    matching(chain, sequence);
+    end_cursor = length_sequence - 2;
+    aa_index_end = length_chain;
+    while (is_matching(end_cursor, sequence, chain[aa_index_end]))
+    {
+        end_cursor -= 3;
+        aa_index_end -= 1;
+    }
+    exon3_index[0] = end_cursor + 3;
 
-    if (addresses[3] == 0)
+    if (exon3_index[0] > exon3_index[1] || exon1_index[1] < 0) 
     {
         printf("NONE\n");
-    } else
-    {
-        for (i = 0; i < 4; i++)
-    {
-        printf("%d ", addresses[i]);
+        return 0;
     }
-    printf("\n");
+
+
+    if (aa_index - 1 >= aa_index_end)
+    {
+        int temp_start = exon1_index[1] + 1; 
+        int temp_end = exon3_index[0] - 3;
+        int temp_aa_index = aa_index - 1;
+        
+        if (aa_index - 1 - aa_index_end >= 1) /* if they overlap ---> lenght - aa_end + aa_start = total aminoacid found || lenght + 1 = total aminoacid number -> aa_start - aa_end - 1 = redundant*/
+        {   
+            int redundant;
+            redundant = aa_index - aa_index_end - 1;
+            if (redundant % 2 == 1)
+            {
+                exon1_index[1] -= 3 * ((redundant + 1) / 2);
+                exon3_index[0] += 3 * ((redundant + 1) / 2);
+                temp_start = exon1_index[1] + 2;
+                temp_end = exon3_index[0] - 2;
+                while (temp_end >= temp_start)
+                {
+                    if (is_matching(temp_start, sequence, chain[aa_index - ((redundant + 1) / 2)]))
+                    {
+                        exon2_index[0] = temp_start;
+                        exon2_index[1] = temp_start + 2;
+                        intron1[0] = exon1_index[1] + 1;
+                        intron1[1] = exon2_index[0] - 1;
+                        intron2[0] = exon2_index[1] + 1;
+                        intron2[1] = exon3_index[0] - 1;
+                        printf("%d %d %d %d\n", intron1[0], intron1[1], intron2[0], intron2[1]);
+                        return 0;
+                    }
+                    temp_start += 1;
+                } printf("NONE"); return 0;
+            } else
+            {
+                exon1_index[1] -= 3 * ((redundant + 2) / 2);
+                exon3_index[0] += 3 * ((redundant) / 2);
+                temp_start = exon1_index[1] + 2;
+                temp_end = exon3_index[0] - 2;
+                while (temp_end >= temp_start)
+                {
+                    if (is_matching(temp_start, sequence, chain[aa_index - ((redundant + 1) / 2)]))
+                    {
+                        exon2_index[0] = temp_start;
+                        exon2_index[1] = temp_start + 2;
+                        intron1[0] = exon1_index[1] + 1;
+                        intron1[1] = exon2_index[0] - 1;
+                        intron2[0] = exon2_index[1] + 1;
+                        intron2[1] = exon3_index[0] - 1;
+                        printf("%d %d %d %d\n", intron1[0], intron1[1], intron2[0], intron2[1]);
+                        return 0;
+                    }
+                    temp_start += 1;
+                }
+            }
+        }
+        
+        while (temp_start < temp_end)
+        {
+            if (is_matching(temp_start, sequence, chain[temp_aa_index]))
+            {
+                break;
+            } else
+            {
+                temp_start += 1;
+            }
+        }
+        if (temp_end > temp_start)
+        {
+            exon2_index[0] = temp_start;
+            exon2_index[1] = temp_start + 2;
+            exon1_index[1] -= 3;
+        } else 
+        {   
+            int temp_start = exon1_index[1] + 1;
+            int temp_end = exon3_index[0] - 3;
+            int temp_aa_index = aa_index_end + 1;
+            while (temp_start < temp_end)
+            {
+                if (is_matching(temp_end, sequence, chain[temp_aa_index]))
+                {
+                    break;
+                } else
+                {
+                    temp_end -=1;
+                }
+            }
+            if (temp_end > temp_start)
+            {
+            exon2_index[0] = temp_end;
+            exon2_index[1] = temp_end + 2;
+            exon3_index[0] += 3;
+            
+            } else
+            {
+                printf("NONE\n");
+                return 0;
+            }
+            
+        }
+        intron1[0] = exon1_index[1] + 1;
+        intron1[1] = exon2_index[0] - 1;
+        intron2[0] = exon2_index[1] + 1;
+        intron2[1] = exon3_index[0] - 1;
+        printf("%d %d %d %d\n", intron1[0], intron1[1], intron2[0], intron2[1]);
     }
     
-    return 0;
+    else 
+    {
+        while (start_cursor <= end_cursor)
+        {
+            int temp_start = start_cursor;
+            int temp_aa_index = aa_index;
+            int temp_aa_index_end = aa_index_end;
+            while (is_matching(temp_start, sequence, chain[temp_aa_index]) && temp_start < start_cursor + 3 * (aa_index_end - aa_index + 1))
+            {
+                temp_start += 3;
+                temp_aa_index += 1;
+            }
+            if (temp_aa_index > temp_aa_index_end)
+            {
+                exon2_index[0] = start_cursor;
+                exon2_index[1] = start_cursor + (3 * (aa_index_end - aa_index + 1)) - 1;
+                intron1[0] = exon1_index[1] + 1;
+                intron1[1] = exon2_index[0] - 1;
+                intron2[0] = exon2_index[1] + 1;
+                intron2[1] = exon3_index[0] - 1;
+                printf("%d %d %d %d\n", intron1[0], intron1[1], intron2[0], intron2[1]);
+                return 0;
+            }
+            start_cursor += 1;
+        }
+        printf("NONE\n");
+        return 0;
+    }
+    
 }
-
-/*  cotrol statements
-    int y=0,p=0;
-    while (sequence[y])
-    {
-        printf("%c", sequence[y]);
-        y++;
-    }
-    while (chain[p])
-    {
-        printf("%c", chain[p]);
-        p++;
-    }
-*/
